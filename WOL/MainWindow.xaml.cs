@@ -120,7 +120,16 @@ namespace WOL
             string ip = TextBoxIP.Text;
             if (!System.Net.IPAddress.TryParse(ip, out _))
             {
-                ip = GetIp(ip);
+                try
+                {
+                    ip = GetIp(ip);
+                }
+                catch
+                {
+                    TextBlockResult.Foreground = Brushes.Red;
+                    TextBlockResult.Text = "Failed (unable to get IP)";
+                    return;
+                }
             }
             bool result = WakeUp(TextBoxMAC.Text, ip, int.Parse(TextBoxPort.Text));
             if (result)
